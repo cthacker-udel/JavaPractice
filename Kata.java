@@ -92,9 +92,122 @@ public class Kata {
 
     }
 
+    public static boolean validParentheses(String parens) {
+
+        Stack<String> parenStack = new Stack<>();
+        for (int i = 0; i < parens.length(); i++) {
+            char theParen = parens.charAt(i);
+            if (")".contains(theParen + "")) {
+                // is a bracket
+                switch (theParen) {
+                    case ')': {
+                        if (parenStack.size() > 0 && parenStack.peek().equals("(")) {
+                            parenStack.pop();
+                        } else {
+                            return false;
+                        }
+                        break;
+                    }
+                }
+            } else if ("(".contains(theParen + "")) {
+                parenStack.push(theParen+"");
+            }
+        }
+        return true;
+    }
+
+    public static String pluralize_time(int count, char spec) {
+
+        if (count > 1) {
+            switch (spec) {
+                case 'y':
+                    return String.format("%d years", count);
+                case 'd':
+                    return String.format("%d days", count);
+                case 'h':
+                    return String.format("%d hours", count);
+                case 'm':
+                    return String.format("%d minutes", count);
+                case 's':
+                    return String.format("%d seconds", count);
+                default:
+                    return "";
+            }
+        } else {
+            switch (spec) {
+                case 'y':
+                    return String.format("%d year", count);
+                case 'd':
+                    return String.format("%d day", count);
+                case 'h':
+                    return String.format("%d hour", count);
+                case 'm':
+                    return String.format("%d minute", count);
+                case 's':
+                    return String.format("%d second", count);
+                default:
+                    return "";
+            }
+        }
+
+    }
+
+    public static String formatDuration(int seconds) {
+        if (seconds <= 0) {
+            return "now";
+        }
+        int years = 0, days = 0, hours = 0, minutes = 0, s = 0;
+        while (seconds >= 31536000) {
+            years++;
+            seconds -= 31536000;
+        }
+        while (seconds >= 86400) {
+            days++;
+            seconds -= 86400;
+        }
+        while (seconds >= 3600) {
+            hours++;
+            seconds -= 3600;
+        }
+        while (seconds >= 60) {
+            minutes++;
+            seconds -= 60;
+        }
+        s = seconds;
+        char specs[] = {'y', 'd', 'h', 'm', 's'};
+        int amts[] = {years, days, hours, minutes, s};
+        ArrayList<String> times = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            int amt = amts[i];
+            char spec = specs[i];
+            if (amt > 0) {
+                times.add(pluralize_time(amt, spec));
+            }
+        }
+        if (times.size() > 1) {
+            if (times.size() > 2) {
+                String lastOne = times.remove(times.size() - 1);
+                String secondToLast = times.remove(times.size() - 1);
+                times.add(String.format("%s and %s", secondToLast, lastOne));
+                return String.join(", ", times);
+            } else {
+                return String.join(" and ", times);
+            }
+        } else {
+            return times.get(0);
+        }
+
+    }
+
+    public static String maskify(String str) {
+
+        return str.length() >= 4 ? "#".repeat(str.length() - 4) + str.substring(str.length() - 4) : str;
+
+    }
+
     public static void main(String[] args) {
 
-        System.out.println(Arrays.toString(waveSort(new int[] {1, 2, 34, 4, 5, 5, 5, 65, 6, 65, 5454, 4})));
+        formatDuration(3662);
 
     }
 
