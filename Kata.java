@@ -205,9 +205,54 @@ public class Kata {
 
     }
 
+    public static String rangeExtraction(int[] arr) {
+
+        ArrayList<int[]> ranges = new ArrayList<>();
+        int left = arr[0];
+        int right = arr[0];
+        for (int i = 0; i < arr.length; i++) {
+            int currentElem = arr[i];
+            if (Math.abs(right - currentElem) > 1) {
+                if (Math.abs(right - left) == 1) {
+                    // only two elems
+                    int[] range = new int[]{left, left};
+                    ranges.add(range);
+                    range = new int[]{right, right};
+                    ranges.add(range);
+                } else {
+                    // found new starter
+                    int[] range = new int[]{left, right};
+                    ranges.add(range);
+                }
+                left = currentElem;
+                right = currentElem;
+            } else {
+                right = currentElem;
+            }
+        }
+        if (Math.abs(left - right) == 1) {
+            int[] range = new int[]{left, left};
+            ranges.add(range);
+            range = new int[]{right, right};
+            ranges.add(range);
+        } else {
+            int[] lastRange = new int[]{left, right};
+            ranges.add(lastRange);
+        }
+        ArrayList<String> strList = new ArrayList<>();
+        for (int[] eacharr : ranges) {
+            if (eacharr[0] == eacharr[1]) {
+                strList.add(eacharr[0] + "");
+            } else {
+                strList.add(eacharr[0] + "-" + eacharr[1]);
+            }
+        }
+        return String.join(",", strList);
+    }
+
     public static void main(String[] args) {
 
-        formatDuration(3662);
+        System.out.println(rangeExtraction(new int[] {-3,-2,-1,2,10,15,16,18,19,20}));
 
     }
 
