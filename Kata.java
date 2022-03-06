@@ -250,9 +250,110 @@ public class Kata {
         return String.join(",", strList);
     }
 
+    public static String stringy(int size) {
+
+        return IntStream.range(0, size).mapToObj(e -> e % 2 == 0 ? "1" : "0").collect(Collectors.joining(""));
+
+    }
+
+    public static int summation(int n) {
+        return IntStream.rangeClosed(1, n).sum();
+    }
+
+    public int min(int[] list) {
+
+        Arrays.sort(list);
+        return list[0];
+
+    }
+
+    public int max(int[] list) {
+        Arrays.sort(list);
+        return list[list.length - 1];
+    }
+
+    public static String[] capitalize(String s) {
+
+        s = s.toLowerCase();
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+
+        AtomicInteger index = new AtomicInteger();
+        Stream.of(s.split("")).forEach(e -> {
+            if (index.get() % 2 == 0) {
+                sb1.append(e.toUpperCase());
+                sb2.append(e.toLowerCase());
+            } else {
+               sb1.append(e.toLowerCase());
+               sb2.append(e.toUpperCase());  
+            }
+            index.incrementAndGet();
+        });
+        return new String[] {sb1.toString(), sb2.toString()};
+
+    }
+
+    public static long fib (int n) {
+        ArrayList<Integer> intList = new ArrayList<>(Arrays.asList(1, 1));
+        while (intList.size() < n) {
+            intList.add(intList.get(intList.size() - 1) + intList.get(intList.size() - 2));
+        }
+        return intList.get(intList.size() - 1);
+    }
+
+    public static long cardGame(long n) {
+
+        long alice = 0;
+        long bob = 0;
+        boolean turn = true;
+        while (n > 0) {
+            if (n <= 4) {
+                alice += turn ? n - 1 : 1;
+                bob += turn ? 1 : n - 1;
+                return alice;
+            } else if (n % 2 != 0) {
+                bob += turn ? 0 : 1;
+                alice += turn ? 1 : 0;
+                n -= 1;
+            } else if ((n / 2) % 2 != 0) {
+                // 10 --> 5
+                alice += turn ? n / 2 : 0;
+                bob += turn ? 0 : n / 2;
+                n /= 2;
+            } else if ((n / 2) % 2 == 0) {
+                alice += turn ? 1 : 0;
+                bob += turn ? 0 : 1;
+                n -= 1;
+            } else if (n % 2 == 0) {
+                alice += turn ? n / 2 : 0;
+                bob += turn ? 0 : n / 2;
+                n /= 2;
+            } else {
+                alice += turn ? 1 : 0;
+                bob += turn ? 0 : 1;
+                n -= 1;
+            }
+            turn = !turn;
+        }
+        return alice;
+
+
+    }
+
+    // 11 -- 1
+    // 10 -- 1
+    // 5 -- 6
+    // 4 -- 6
+    // 
+
+    // 6 -- 3
+    // 3 -- 3
+    // 2 -- 4
+
+
     public static void main(String[] args) {
 
-        System.out.println(rangeExtraction(new int[] {-3,-2,-1,2,10,15,16,18,19,20}));
+        System.out.println(cardGame(4));
 
     }
 
