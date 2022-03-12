@@ -350,10 +350,145 @@ public class Kata {
     // 3 -- 3
     // 2 -- 4
 
+    public static boolean smallEnough(int[] a, int limit) {
+        return IntStream.of(a).filter(e -> e <= limit).toArray().length == a.length;
+    }
+
+    static final String alphanumeric = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+
+    public static String byteMode(String msg) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("0100");
+        String binLength = String.format("%8s",Integer.toBinaryString(msg.length())).replace(" ", "0");
+        sb.append(binLength);
+        for (int i = 0; i < msg.length(); i++) {
+            char result = msg.charAt(i);
+            String binString = String.format("%8s", Integer.toBinaryString(result)).replace(" ", "0");
+            sb.append(binString);
+        }
+        return sb.toString();
+
+    }
+
+    public static List<String> alphaNumericSeparateGroups(String msg) {
+        ArrayList<String> sb = new ArrayList<>();
+        String[] splitStr = msg.split("");
+        String emptyString = "";
+        for (String eachletter : splitStr) {
+            if (emptyString.length() == 2) {
+                sb.add(emptyString);
+                emptyString = eachletter;
+            } else {
+                emptyString += eachletter;
+            }
+        }
+        if (emptyString.length() > 0) {
+            sb.add(emptyString);
+        }
+        return sb;
+    }
+
+    public static String convertToPairAlpha(String pair) {
+        if (pair.length() == 1) {
+            return String.format("%6s", Integer.toBinaryString(alphanumeric.indexOf(pair.charAt(0)+""))).replaceAll(" ", "0");
+        } else {
+            int firstVal = alphanumeric.indexOf(pair.charAt(0)+"");
+            int secondVal = alphanumeric.indexOf(pair.charAt(1)+"");
+            int total = (firstVal * 45) + secondVal;
+            return String.format("%11s", Integer.toBinaryString(total)).replaceAll(" ", "0");
+        }
+    }
+
+    public static String alphaNumericMode(String msg) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("0010");
+        String binLength = String.format("%9s", Integer.toBinaryString(msg.length())).replaceAll(" ", "0");
+        sb.append(binLength);
+        List<String> pairs = alphaNumericSeparateGroups(msg);
+        pairs.forEach(e -> {
+            String binPair = convertToPairAlpha(e);
+            sb.append(binPair);
+        });
+        return sb.toString();
+    }
+
+    public static List<String> pairsNumericMode(String msg) {
+
+        ArrayList<String> sb = new ArrayList<>();
+        String emptyString = "";
+        String[] splitString = msg.split("");
+        for (String eachletter: splitString) {
+            if (emptyString.length() == 3) {
+                sb.add(emptyString);
+                emptyString = eachletter;
+            } else {
+                emptyString += eachletter;
+            }
+        }
+        if (emptyString.length() > 0) {
+            sb.add(emptyString);
+        }
+        return sb;
+    }
+
+    public static String numericMode(String msg) {
+
+        List<String> groups = pairsNumericMode(msg);
+        StringBuilder sb = new StringBuilder();
+        sb.append("0001");
+        sb.append(String.format("%10s", Integer.toBinaryString(msg.length())).replace(" ", "0"));
+        groups.forEach(e -> {
+            int result = Integer.parseInt(e);
+            if (result > 99) {
+                sb.append(String.format("%10s", Integer.toBinaryString(result)).replace(" ", "0"));
+            } else if (result >= 10) {
+                sb.append(String.format("%7s", Integer.toBinaryString(result)).replace(" ", "0"));
+            } else {
+                sb.append(String.format("%4s", Integer.toBinaryString(result)).replace(" ", "0"));
+            }
+        });
+        return sb.toString();
+    }
+
+    public static boolean containsAllAlphanumeric(String msg) {
+        return Stream.of(msg.split("")).allMatch(e -> alphanumeric.contains(e));
+    }
+
+    public static String encode(String message) {
+
+        System.out.println(String.format("Testing: %s\n", message));
+        try {
+            Double.parseDouble(message);
+            return numericMode(message);
+        } catch (Exception e) {
+            if (containsAllAlphanumeric(message)) {
+                // alphanumeric
+                return alphaNumericMode(message);
+            } else {
+                // byte mode
+                return byteMode(message);
+            }
+        }
+
+    }
+
 
     public static void main(String[] args) {
 
-        System.out.println(cardGame(4));
+        String[] tests = new String[] {"0240758114147728781524", "Hello World"};
+        String[] results = new String[] {"0001000001011000110001001011110010101101100111101100000100110110111000100110000100", "0100000010110100100001100101011011000110110001101111001000000101011101101111011100100110110001100100"};
+
+        for (int i = 0; i < tests.length; i++) {
+            String result = encode(tests[i]);
+            String expected = results[i];
+            if (result.equals(expected)) {
+                System.out.println(String.format("Test %d: Correct", i+1));
+            } else {
+                System.out.println(String.format("Test %d: Failed", i+1));
+            }
+        }
 
     }
 
