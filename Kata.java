@@ -3,7 +3,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.*;
 
 public class Kata {
-    
+
     public static int findInt(int[] a) {
 
         List<Integer> linkedList = IntStream.of(a).boxed().collect(Collectors.toList());
@@ -40,7 +40,10 @@ public class Kata {
 
         final String punctuation = "?!,.";
 
-        return Stream.of(str.split(" ")).map(e -> e.contains("?") || e.contains("!") || e.contains(",") || e.contains(".") ? e : e.substring(1) + e.charAt(0) + "ay").collect(Collectors.joining(" "));
+        return Stream.of(str.split(" "))
+                .map(e -> e.contains("?") || e.contains("!") || e.contains(",") || e.contains(".") ? e
+                        : e.substring(1) + e.charAt(0) + "ay")
+                .collect(Collectors.joining(" "));
 
     }
 
@@ -86,9 +89,11 @@ public class Kata {
                 }
                 return names_o1[1].toUpperCase().compareTo(names_o2[1].toUpperCase());
             }
-            
+
         });
-        return people.stream().map(e -> String.format("(%s, %s)", e.split(":")[1].toUpperCase(), e.split(":")[0].toUpperCase())).collect(Collectors.joining(""));
+        return people.stream()
+                .map(e -> String.format("(%s, %s)", e.split(":")[1].toUpperCase(), e.split(":")[0].toUpperCase()))
+                .collect(Collectors.joining(""));
 
     }
 
@@ -110,7 +115,7 @@ public class Kata {
                     }
                 }
             } else if ("(".contains(theParen + "")) {
-                parenStack.push(theParen+"");
+                parenStack.push(theParen + "");
             }
         }
         return true;
@@ -174,8 +179,8 @@ public class Kata {
             seconds -= 60;
         }
         s = seconds;
-        char specs[] = {'y', 'd', 'h', 'm', 's'};
-        int amts[] = {years, days, hours, minutes, s};
+        char specs[] = { 'y', 'd', 'h', 'm', 's' };
+        int amts[] = { years, days, hours, minutes, s };
         ArrayList<String> times = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             int amt = amts[i];
@@ -215,13 +220,13 @@ public class Kata {
             if (Math.abs(right - currentElem) > 1) {
                 if (Math.abs(right - left) == 1) {
                     // only two elems
-                    int[] range = new int[]{left, left};
+                    int[] range = new int[] { left, left };
                     ranges.add(range);
-                    range = new int[]{right, right};
+                    range = new int[] { right, right };
                     ranges.add(range);
                 } else {
                     // found new starter
-                    int[] range = new int[]{left, right};
+                    int[] range = new int[] { left, right };
                     ranges.add(range);
                 }
                 left = currentElem;
@@ -231,12 +236,12 @@ public class Kata {
             }
         }
         if (Math.abs(left - right) == 1) {
-            int[] range = new int[]{left, left};
+            int[] range = new int[] { left, left };
             ranges.add(range);
-            range = new int[]{right, right};
+            range = new int[] { right, right };
             ranges.add(range);
         } else {
-            int[] lastRange = new int[]{left, right};
+            int[] lastRange = new int[] { left, right };
             ranges.add(lastRange);
         }
         ArrayList<String> strList = new ArrayList<>();
@@ -284,16 +289,16 @@ public class Kata {
                 sb1.append(e.toUpperCase());
                 sb2.append(e.toLowerCase());
             } else {
-               sb1.append(e.toLowerCase());
-               sb2.append(e.toUpperCase());  
+                sb1.append(e.toLowerCase());
+                sb2.append(e.toUpperCase());
             }
             index.incrementAndGet();
         });
-        return new String[] {sb1.toString(), sb2.toString()};
+        return new String[] { sb1.toString(), sb2.toString() };
 
     }
 
-    public static long fib (int n) {
+    public static long fib(int n) {
         ArrayList<Integer> intList = new ArrayList<>(Arrays.asList(1, 1));
         while (intList.size() < n) {
             intList.add(intList.get(intList.size() - 1) + intList.get(intList.size() - 2));
@@ -337,14 +342,13 @@ public class Kata {
         }
         return alice;
 
-
     }
 
     // 11 -- 1
     // 10 -- 1
     // 5 -- 6
     // 4 -- 6
-    // 
+    //
 
     // 6 -- 3
     // 3 -- 3
@@ -360,7 +364,7 @@ public class Kata {
 
         StringBuilder sb = new StringBuilder();
         sb.append("0100");
-        String binLength = String.format("%8s",Integer.toBinaryString(msg.length())).replace(" ", "0");
+        String binLength = String.format("%8s", Integer.toBinaryString(msg.length())).replace(" ", "0");
         sb.append(binLength);
         for (int i = 0; i < msg.length(); i++) {
             char result = msg.charAt(i);
@@ -391,10 +395,11 @@ public class Kata {
 
     public static String convertToPairAlpha(String pair) {
         if (pair.length() == 1) {
-            return String.format("%6s", Integer.toBinaryString(alphanumeric.indexOf(pair.charAt(0)+""))).replaceAll(" ", "0");
+            return String.format("%6s", Integer.toBinaryString(alphanumeric.indexOf(pair.charAt(0) + "")))
+                    .replaceAll(" ", "0");
         } else {
-            int firstVal = alphanumeric.indexOf(pair.charAt(0)+"");
-            int secondVal = alphanumeric.indexOf(pair.charAt(1)+"");
+            int firstVal = alphanumeric.indexOf(pair.charAt(0) + "");
+            int secondVal = alphanumeric.indexOf(pair.charAt(1) + "");
             int total = (firstVal * 45) + secondVal;
             return String.format("%11s", Integer.toBinaryString(total)).replaceAll(" ", "0");
         }
@@ -419,7 +424,7 @@ public class Kata {
         ArrayList<String> sb = new ArrayList<>();
         String emptyString = "";
         String[] splitString = msg.split("");
-        for (String eachletter: splitString) {
+        for (String eachletter : splitString) {
             if (emptyString.length() == 3) {
                 sb.add(emptyString);
                 emptyString = eachletter;
@@ -474,70 +479,225 @@ public class Kata {
 
     }
 
-  static String toCamelCase(String s){
-    return s.length() > 0 ? s.charAt(0) + Stream.of(s.replaceAll("-","_").split("_")).map(e -> e.substring(0,1).toUpperCase() + e.substring(1)).collect(Collectors.joining("")).substring(1) : "";
-  }
+    static String toCamelCase(String s) {
+        return s.length() > 0 ? s.charAt(0) + Stream.of(s.replaceAll("-", "_").split("_"))
+                .map(e -> e.substring(0, 1).toUpperCase() + e.substring(1)).collect(Collectors.joining("")).substring(1)
+                : "";
+    }
 
-  public static int[][] spiralize(int size) {
+    public static void printSpiral(int[][] spiral) {
 
-      String[] directions = new String[]{"e","s","w","n"};
-      int startingDirectionInd = 0;
-      int[][] grid = new int[size][size];
-      int row = 0;
-      int col = 0;
-      while (true) {
-          String direction = directions[startingDirectionInd];
-          switch (direction) {
-              case "e": {
-                  for (; col < grid[row].length; col++) {
-                      if (col == (grid[row].length - 1) || grid[row][col + 2] == 1) {
-                          break;
-                      } else {
-                          grid[row][col] = 1;
-                      }
-                      col++;
-                  }
-                  startingDirectionInd++;
-              }
-              case "s": {
-                  for (; row < grid.length; row++) {
-                      if (row == (grid.length - 1) || grid[row + 2][col] == 1) {
-                          break;
-                      } else {
-                          grid[row][col] = 1;
-                      }
-                  }
-                  startingDirectionInd++;
-              }
-              case "w": {
-                  for (; col >= 0; col--) {
-                      if (col == 0 || grid[row][col - 2] == 1) {
-                          break;
-                      } else {
-                          grid[row][col] = 1;
-                      }
-                  }
-                  startingDirectionInd++;
-              }
-              case "n": {
-                  for (;row >= 0; row--) {
-                      if (row == 0 || grid[row - 2][col] == 1) {
-                          break;
-                      } else {
-                          grid[row][col] = 1;
-                      }
-                  }
-                  startingDirectionInd = 0;
-              }
-          }
-      }
+        for (int i = 0; i < spiral.length; i++) {
+            for (int j = 0; j < spiral.length; j++) {
+                if (spiral[i][j] == 0) {
+                    System.out.printf(".");
+                } else {
+                    System.out.printf("0");
+                }
+            }
+            System.out.println("");
+        }
+        // debug System.out.println("############");
 
-  }
+    }
 
+    public static int[][] spiralize(int size) {
+
+        String[] directions = new String[] { "e", "s", "w", "n" };
+        int startingDirectionInd = 0;
+        int[][] grid = new int[size][size];
+        int row = 0;
+        int col = 0;
+        boolean outermostLayer = false;
+        int movements = 0;
+        while (movements < size) {
+            // printSpiral(grid);
+            String direction = directions[startingDirectionInd];
+            movements++;
+            switch (direction) {
+                case "e": {
+                    for (; col < grid[row].length; col++) {
+                        if (col == (grid[row].length) || (outermostLayer && grid[row][col + 1] == 1)) {
+                            break;
+                        } else {
+                            grid[row][col] = 1;
+                        }
+                    }
+                    col--;
+                    startingDirectionInd++;
+                    break;
+                }
+                case "s": {
+                    for (; row < grid.length; row++) {
+                        if (row == (grid.length) || (outermostLayer && grid[row + 1][col] == 1)) {
+                            break;
+                        } else {
+                            grid[row][col] = 1;
+                        }
+                    }
+                    row--;
+                    startingDirectionInd++;
+                    break;
+                }
+                case "w": {
+                    for (; col >= 0; col--) {
+                        if (col == -1 || (outermostLayer && grid[row][col - 1] == 1)) {
+                            break;
+                        } else {
+                            grid[row][col] = 1;
+                        }
+                    }
+                    col++;
+                    startingDirectionInd++;
+                    break;
+                }
+                case "n": {
+                    for (; row >= 0; row--) {
+                        if (row == -1 || grid[row - 1][col] == 1) {
+                            break;
+                        } else {
+                            grid[row][col] = 1;
+                        }
+                    }
+                    row++;
+                    outermostLayer = true;
+                    startingDirectionInd = 0;
+                    break;
+                }
+            }
+        }
+        // printSpiral(grid);
+        return grid;
+
+    }
+
+    public static String interpret(String... args) {
+        String input;
+        String code;
+        if (args.length < 2) {
+            input = "";
+            code = args[0];
+        } else {
+            code = args[0];
+            input = args[1];
+        }
+        ArrayList<Integer> convertedInput = Stream
+                .of(
+                    Stream.of(
+                        input.replace("\\", "")
+                        .split("u")
+                    )
+                    .mapToInt(e -> Integer.parseInt(e, 16))
+                    .mapToObj(e -> Integer.toBinaryString(e))
+                    .map(e -> "00000000".substring(e.length()) + e)
+                    .map(e -> new StringBuilder(e).reverse().toString())
+                    .collect(Collectors.joining("")).split(""))
+                .mapToInt(e -> Integer.parseInt(e.charAt(0) + ""))
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+        while (convertedInput.size() % 8 != 0) {
+            convertedInput.add(0);
+        }
+        
+        ArrayList<Integer> bits = new ArrayList<>(List.of(0));
+        // characters are read in using their ascii integer value, not stored as actual
+        // characters
+        int pointerInd = 0;
+        int tapeIndex = code.length() / 2;
+        int inputIndex = 0;
+        StringBuilder sb = new StringBuilder("");
+        while (tapeIndex < code.length()) {
+
+            char theCharacter = code.charAt(tapeIndex);
+            switch (theCharacter) {
+
+                case '+': {
+                    int[] bitsArr = bits.stream().mapToInt(e -> e).toArray();
+                    bitsArr[pointerInd] = bitsArr[pointerInd] == 0 ? 1 : 0;
+                    bits = Arrays.stream(bitsArr).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+                    tapeIndex++;
+                    break;
+                }
+                case ',': {
+                    int[] bitsArr = bits.stream().mapToInt(e -> e).toArray();
+                    bitsArr[pointerInd] = (int)convertedInput.get(inputIndex);
+                    bits = Arrays.stream(bitsArr).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+                    tapeIndex++;
+                    break;
+                }
+                case 'a': {
+                    tapeIndex++;
+                    break;
+                }
+                case '<': {
+                    if (pointerInd == 0) {
+                        bits.add(0, 0);
+                    } else {
+                        pointerInd--;
+                    }
+                    tapeIndex++;
+                    break;
+                }
+                case '>': {
+                    if (pointerInd == bits.size() - 1) {
+                        bits.add(0);
+                    } else {
+                        pointerInd++;
+                    }
+                    tapeIndex++;
+                    break;
+                }
+                case ';': {
+                    sb.append(bits.get(pointerInd).intValue()+"");
+                    tapeIndex++;
+                    break;
+                }
+                case '[': {
+                    if (bits.get(pointerInd).intValue() == 0) {
+                        // loop to end
+                        for (int i = tapeIndex; i < code.length(); i++) {
+                            if (code.charAt(i) == ']') {
+                                tapeIndex = i + 1;
+                                break;
+                            }
+                        }
+                    } else {
+                        tapeIndex++;
+                    }
+                    break;
+                }
+                case ']': {
+                    if (bits.get(pointerInd).intValue() == 1) {
+                        for (int i = tapeIndex; i >= 0; i--) {
+                            if (code.charAt(i) == '[') {
+                                tapeIndex = i;
+                                break;
+                            }
+                        }
+                    } else {
+                        tapeIndex++;
+                    }
+                }
+
+            }
+
+        }
+        if (sb.toString().length() % 8 != 0) {
+            while (sb.toString().length() % 8 != 0) {
+                sb.append("0");
+            }
+        }
+        return sb.toString();
+
+    }
 
     public static void main(String[] args) {
 
-        
+        long start = System.currentTimeMillis();
+
+        interpret(",;", "*");
+
+        long elapsed = System.currentTimeMillis() - start;
+        System.out.printf("\nElapsed time = %d seconds\n", elapsed / 1000);
 
     }
 
