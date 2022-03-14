@@ -474,21 +474,70 @@ public class Kata {
 
     }
 
+  static String toCamelCase(String s){
+    return s.length() > 0 ? s.charAt(0) + Stream.of(s.replaceAll("-","_").split("_")).map(e -> e.substring(0,1).toUpperCase() + e.substring(1)).collect(Collectors.joining("")).substring(1) : "";
+  }
+
+  public static int[][] spiralize(int size) {
+
+      String[] directions = new String[]{"e","s","w","n"};
+      int startingDirectionInd = 0;
+      int[][] grid = new int[size][size];
+      int row = 0;
+      int col = 0;
+      while (true) {
+          String direction = directions[startingDirectionInd];
+          switch (direction) {
+              case "e": {
+                  for (; col < grid[row].length; col++) {
+                      if (col == (grid[row].length - 1) || grid[row][col + 2] == 1) {
+                          break;
+                      } else {
+                          grid[row][col] = 1;
+                      }
+                      col++;
+                  }
+                  startingDirectionInd++;
+              }
+              case "s": {
+                  for (; row < grid.length; row++) {
+                      if (row == (grid.length - 1) || grid[row + 2][col] == 1) {
+                          break;
+                      } else {
+                          grid[row][col] = 1;
+                      }
+                  }
+                  startingDirectionInd++;
+              }
+              case "w": {
+                  for (; col >= 0; col--) {
+                      if (col == 0 || grid[row][col - 2] == 1) {
+                          break;
+                      } else {
+                          grid[row][col] = 1;
+                      }
+                  }
+                  startingDirectionInd++;
+              }
+              case "n": {
+                  for (;row >= 0; row--) {
+                      if (row == 0 || grid[row - 2][col] == 1) {
+                          break;
+                      } else {
+                          grid[row][col] = 1;
+                      }
+                  }
+                  startingDirectionInd = 0;
+              }
+          }
+      }
+
+  }
+
 
     public static void main(String[] args) {
 
-        String[] tests = new String[] {"0240758114147728781524", "Hello World"};
-        String[] results = new String[] {"0001000001011000110001001011110010101101100111101100000100110110111000100110000100", "0100000010110100100001100101011011000110110001101111001000000101011101101111011100100110110001100100"};
-
-        for (int i = 0; i < tests.length; i++) {
-            String result = encode(tests[i]);
-            String expected = results[i];
-            if (result.equals(expected)) {
-                System.out.println(String.format("Test %d: Correct", i+1));
-            } else {
-                System.out.println(String.format("Test %d: Failed", i+1));
-            }
-        }
+        
 
     }
 
