@@ -2,6 +2,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.*;
 
+import javax.swing.plaf.ColorUIResource;
+
 public class Kata {
 
     public static int findInt(int[] a) {
@@ -690,11 +692,287 @@ public class Kata {
 
     }
 
+    public static boolean fieldValidator(int[][] field) {
+
+        int battleship = 0;
+        int cruisers = 0;
+        int destroyers = 0;
+        int submarines = 0;
+        int consecSpaces = 0;
+        // check corners first
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+
+                boolean isValidSquare = field[i][j] == 1;
+                if (isValidSquare) {
+
+                    // check corner
+                    // bottom left
+                    if (i < field.length - 1 && j > 0 && field[i + 1][j - 1] == 1) {
+                        return false;
+                    }
+                    // bottom right
+                    if (i < field.length - 1 && j < field[0].length - 1 && field[i + 1][j + 1] == 1) {
+                        return false;
+                    }
+                    // upper right
+                    if (i > 0 && j < field[0].length - 1 && field[i - 1][j + 1] == 1) {
+                        return false;
+                    }
+                    // upper left
+                    if (i > 0 && j > 0 && field[i - 1][j - 1] == 1) {
+                        return false;
+                    }
+
+                }
+
+            }
+        }
+        // check by rows first
+        int extras = 0;
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                try {
+                    boolean isValidSquare = field[i][j] == 1;
+                    if (isValidSquare) {
+
+                        if ( i > 0 && field[i - 1][j] == 1) {
+                            continue;
+                        }
+                        if (i < (field.length - 1) && field[i + 1][j] == 1) {
+                            continue;
+                        } else {
+                            field[i][j] = 0;
+                            consecSpaces++;
+                        }
+
+                    } else {
+                        if (consecSpaces > 0) {
+                            if (consecSpaces > 4) {
+                                return false;
+                            } else {
+                                switch (consecSpaces) {
+                                    case 1: {
+                                        if (submarines < 4) {
+                                            submarines++;
+                                        } else {
+                                            extras++;
+                                        }
+                                        consecSpaces = 0;
+                                        break;
+                                    }
+                                    case 2: {
+                                        if (destroyers < 3) {
+                                            destroyers++;
+                                        } else {
+                                            extras++;
+                                        }
+                                        consecSpaces = 0;
+                                        break;
+                                    }
+                                    case 3: {
+                                        if (cruisers < 2) {
+                                            cruisers++;
+                                        } else {
+                                            extras++;
+                                        }
+                                        consecSpaces = 0;
+                                        break;
+                                    }
+                                    default: {
+                                        if (battleship < 1) {
+                                            battleship++;
+                                        } else {
+                                            extras++;
+                                        }
+                                        consecSpaces = 0;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+            if (consecSpaces > 0) {
+                if (consecSpaces > 4) {
+                    return false;
+                } else {
+                    switch (consecSpaces) {
+                        case 1: {
+                            if (submarines < 4) {
+                                submarines++;
+                            } else {
+                                extras++;
+                            }
+                            consecSpaces = 0;
+                            break;
+                        }
+                        case 2: {
+                            if (destroyers < 3) {
+                                destroyers++;
+                            } else {
+                                extras++;
+                            }
+                            consecSpaces = 0;
+                            break;
+                        }
+                        case 3: {
+                            if (cruisers < 2) {
+                                cruisers++;
+                            } else {
+                                extras++;
+                            }
+                            consecSpaces = 0;
+                            break;
+                        }
+                        default: {
+                            if (battleship < 1) {
+                                battleship++;
+                            } else {
+                                extras++;
+                            }
+                            consecSpaces = 0;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                try {
+                    boolean isValidSquare = field[j][i] == 1;
+                    if (isValidSquare) {
+
+                        if (i > 0 && field[j][i - 1] == 1) {
+                            continue;
+                        }
+                        if (i < field.length - 1 && field[j][i + 1] == 1) {
+                            continue;
+                        }
+                        else {
+                            field[j][i] = 0;
+                            consecSpaces++;
+                        }
+
+                    } else {
+                        if (consecSpaces > 0) {
+                            if (consecSpaces > 4) {
+                                return false;
+                            } else {
+                                switch (consecSpaces) {
+                                    case 1: {
+                                        if (submarines < 4) {
+                                            submarines++;
+                                        } else {
+                                            extras++;
+                                        }
+                                        consecSpaces = 0;
+                                        break;
+                                    }
+                                    case 2: {
+                                        if (destroyers < 3) {
+                                            destroyers++;
+                                        } else {
+                                            extras++;
+                                        }
+                                        consecSpaces = 0;
+                                        break;
+                                    }
+                                    case 3: {
+                                        if (cruisers < 2) {
+                                            cruisers++;
+                                        } else {
+                                            extras++;
+                                        }
+                                        consecSpaces = 0;
+                                        break;
+                                    }
+                                    default: {
+                                        if (battleship < 1) {
+                                            battleship++;
+                                        } else {
+                                            extras++;
+                                        }
+                                        consecSpaces = 0;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+            if (consecSpaces > 0) {
+                if (consecSpaces > 4) {
+                    return false;
+                } else {
+                    switch (consecSpaces) {
+                        case 1: {
+                            if (submarines < 4) {
+                                submarines++;
+                            } else {
+                                extras++;
+                            }
+                            consecSpaces = 0;
+                            break;
+                        }
+                        case 2: {
+                            if (destroyers < 3) {
+                                destroyers++;
+                            } else {
+                                extras++;
+                            }
+                            consecSpaces = 0;
+                            break;
+                        }
+                        case 3: {
+                            if (cruisers < 2) {
+                                cruisers++;
+                            } else {
+                                extras++;
+                            }
+                            consecSpaces = 0;
+                            break;
+                        }
+                        default: {
+                            if (battleship < 1) {
+                                battleship++;
+                            } else {
+                                extras++;
+                            }
+                            consecSpaces = 0;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return battleship == 1 && cruisers == 2 && destroyers == 3 && submarines == 4 && extras == 0;
+
+    }
+
     public static void main(String[] args) {
 
         long start = System.currentTimeMillis();
 
-        interpret(",;", "*");
+        int[][] battleField =          {{1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+                                        {0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
+                                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                        {1, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+                                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                        {1, 0, 0, 0, 1, 1, 1, 0, 0, 0},
+                                        {0, 0, 0, 1, 0, 0, 0, 0, 1, 1},
+                                        {0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                                        {0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
+                                        {0, 0, 0, 0, 1, 0, 1, 0, 0, 0}};
+
+        System.out.printf("validated to : %s", fieldValidator(battleField) ? "true" : "false");
 
         long elapsed = System.currentTimeMillis() - start;
         System.out.printf("\nElapsed time = %d seconds\n", elapsed / 1000);
