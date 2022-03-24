@@ -957,22 +957,85 @@ public class Kata {
 
     }
 
+    public static String generateCode(String theChars) {
+
+        char theChar = theChars.charAt(0);
+        switch (theChar) {
+            case 'F': {
+                return String.format("<span style=\"color: pink\">%s</span>", theChars);
+            }
+            case 'L': {
+                return String.format("<span style=\"color: red\">%s</span>", theChars);
+            }
+            case 'R': {
+                return String.format("<span style=\"color: green\">%s</span>", theChars);
+            }
+            default: {
+                return String.format("<span style=\"color: orange\">%s</span>", theChars);
+            }
+        }
+
+    }
+
+    public static String highlight(String code) {
+
+        ArrayList<String> commands = new ArrayList<>();
+        String currentCommand = "";
+        String validChars = "FLR0123456789";
+        String numericals = "0123456789";
+        for (int i = 0; i < code.length(); i++) {
+            String iCommand = code.charAt(i)+"";
+            if (validChars.contains(iCommand)) {
+
+                if (currentCommand.length() > 0) {
+                    if (!currentCommand.endsWith(iCommand)) {
+                        if (numericals.contains(iCommand) && numericals.contains(currentCommand.substring(0, 1))) {
+                            currentCommand += iCommand;
+                            continue;
+                        } else {
+                            commands.add(generateCode(currentCommand));
+                            currentCommand = iCommand;
+                        }
+                    } else {
+                        currentCommand += iCommand;
+                    }
+                } else {
+                    currentCommand += iCommand;
+                }
+
+            } else {
+                if (currentCommand.length() > 0) {
+                    commands.add(generateCode(currentCommand));
+                }
+                commands.add(iCommand);
+                currentCommand = "";
+            }
+        }
+        if (currentCommand.length() > 0) {
+            commands.add(generateCode(currentCommand));
+        }
+        return String.join("", commands);
+    }
+
+    public static int[] divisibleBy(int[] numbers, int divider) {
+        return Arrays.stream(numbers).filter(e -> e % divider == 0).toArray();
+    }
+
+    public static int Past(int h, int m, int s) {
+        return (h * 60 * 60 * 1000) + (m * 60 * 1000) + (s * 1000);
+    }
+
+    public static int nthPower(int[] array, int n) {
+
+        return n >= array.length || n < 0 ? -1 : (int)Math.pow(array[n], n);
+
+    }
+
     public static void main(String[] args) {
 
         long start = System.currentTimeMillis();
 
-        int[][] battleField =          {{1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-                                        {0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
-                                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                        {1, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-                                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                        {1, 0, 0, 0, 1, 1, 1, 0, 0, 0},
-                                        {0, 0, 0, 1, 0, 0, 0, 0, 1, 1},
-                                        {0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
-                                        {0, 0, 0, 0, 1, 0, 1, 0, 0, 0}};
-
-        System.out.printf("validated to : %s", fieldValidator(battleField) ? "true" : "false");
+        highlight("FFFR345F2LL");
 
         long elapsed = System.currentTimeMillis() - start;
         System.out.printf("\nElapsed time = %d seconds\n", elapsed / 1000);
