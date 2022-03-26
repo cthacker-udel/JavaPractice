@@ -1031,11 +1031,190 @@ public class Kata {
 
     }
 
+    public static String replace(final String s) {
+
+        return s.replaceAll("[aeiouAEIOU]", "!");
+
+    }
+
+    public static String noSpace(final String x) {
+        return x.trim().replaceAll(" ", "");
+    }
+
+    public static int[] invert(int[] array) {
+
+        return Arrays.stream(array).map(e -> e * -1).toArray();
+
+    }
+
+    public static int noBoringZeros(int n) {
+
+        String strNum = String.valueOf(n);
+        return strNum.endsWith("0") ? Integer.parseInt(strNum.substring(0, strNum.length() - new StringBuilder(strNum).reverse().toString().indexOf("0"))) : Integer.parseInt(strNum);
+
+    }
+
+    public static int getTheLongest(char[][] board) {
+
+        System.out.println("printing the array");
+        for (int i = 0; i < board.length; i++) {
+            System.out.println(Arrays.toString(board[i]));
+        }
+        System.out.println("");
+
+        int longest = 0;
+        // first search rows
+        for (int i = 0; i < board.length; i++) {
+            char[] row = board[i];
+            int cnt = 0;
+            char prevChar = ' ';
+            for (int j = 0; j < row.length; j++) {
+                char currChar = row[j];
+                if (currChar != prevChar && cnt > longest) {
+                    longest = cnt;
+                    prevChar = currChar;
+                    cnt = 1;
+                } else if (currChar == prevChar) {
+                    cnt++;
+                } else {
+                    cnt = 1;
+                    prevChar = currChar;
+                }
+            }
+            if (cnt > longest) {
+                longest = cnt;
+            }
+        }
+        if (longest == board.length) {
+            return longest;
+        }
+        // then search columns
+        for (int i = 0; i < board.length; i++) {
+            ArrayList<Character> col = new ArrayList<>();
+            for (int j = 0; j < board.length; j++) {
+                col.add(board[j][i]);
+            }
+            char prevChar = ' ';
+            char currChar;
+            int cnt = 0;
+            for (int x = 0; x < col.size(); x++) {
+                currChar = col.get(x);
+                if (currChar != prevChar && cnt > longest) {
+                    longest = cnt;
+                    prevChar = currChar;
+                    cnt = 1;
+                } else if (currChar == prevChar) {
+                    cnt++;
+                } else {
+                    cnt = 1;
+                    prevChar = currChar;
+                }
+            }
+            if (cnt > longest) {
+                longest = cnt;
+            }
+            col.clear();
+        }
+        if (longest == board.length) {
+            return longest;
+        }
+        // then search diagonals, start with left -> right
+        for (int i = 0; i < board.length; i++) {
+            char prevChar = ' ';
+            char currChar;
+            int cnt = 0;
+            for (int j = i; j < board.length; j++) {
+                currChar = board[j][j];
+                if (currChar != prevChar && cnt > longest) {
+                    longest = cnt;
+                    prevChar = currChar;
+                    cnt = 1;
+                } else if (currChar == prevChar) {
+                    cnt++;
+                } else {
+                    cnt = 1;
+                    prevChar = currChar;
+                }
+            }
+            if (cnt > longest) {
+                longest = cnt;
+            }
+            prevChar = ' ';
+            cnt = 0;
+            for (int j = i, x = 0; x < board.length && j < board.length; j++, x++) {
+                currChar = board[j][x];
+                if (currChar != prevChar && cnt > longest) {
+                    longest = cnt;
+                    prevChar = currChar;
+                    cnt = 1;
+                } else if (currChar == prevChar) {
+                    cnt++;
+                } else {
+                    cnt = 1;
+                    prevChar = currChar;
+                }
+            }
+            if (cnt > longest) {
+                longest = cnt;
+            }
+        }
+        if (longest == board.length) {
+            return longest;
+        }
+        // then search diagonals, right -> left
+        for (int i = 0; i < board.length; i++) {
+            char prevChar = ' ';
+            char currChar;
+            int cnt = 0;
+            for (int j = i; j >= 0; j--) {
+                currChar = board[j][j];
+                if (currChar != prevChar && cnt > longest) {
+                    longest = cnt;
+                    prevChar = currChar;
+                    cnt = 1;
+                } else if (currChar == prevChar) {
+                    cnt++;
+                } else {
+                    cnt = 1;
+                    prevChar = currChar;
+                }
+            }
+            if (cnt > longest) {
+                longest = cnt;
+            }
+            prevChar = ' ';
+            cnt = 0;
+            for (int j = i, x = 0; x >= 0 && j >= 0; j--, x--) {
+                currChar = board[j][x];
+                if (currChar != prevChar && cnt > longest) {
+                    longest = cnt;
+                    prevChar = currChar;
+                    cnt = 1;
+                } else if (currChar == prevChar) {
+                    cnt++;
+                } else {
+                    cnt = 1;
+                    prevChar = currChar;
+                }
+            }
+            if (cnt > longest) {
+                longest = cnt;
+            }
+        }
+        return longest;
+    }
+
     public static void main(String[] args) {
 
         long start = System.currentTimeMillis();
 
-        highlight("FFFR345F2LL");
+        char board[][] = {{'Y', 'B', 'C', 'D', 'E'},
+                            {'F', 'Y', 'H', 'I', 'J'},
+                            {'K', 'L', 'Y', 'N', 'O'},
+                            {'P', 'Q', 'R', 'Y', 'T'},
+                            {'U', 'W', 'W', 'X', 'Y'}};
+
+        System.out.printf("The longest = %d\n", getTheLongest(board));
 
         long elapsed = System.currentTimeMillis() - start;
         System.out.printf("\nElapsed time = %d seconds\n", elapsed / 1000);
