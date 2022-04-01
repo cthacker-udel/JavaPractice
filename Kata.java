@@ -1204,6 +1204,35 @@ public class Kata {
         return longest;
     }
 
+    public static String Explode(String s) {
+
+        return Arrays.stream(s.split("")).map(e -> String.valueOf(e).repeat(Integer.parseInt(e))).collect(Collectors.joining(""));
+
+    }
+
+    class Node {
+        public Object data;
+        public Node next;
+    }
+
+
+  static int lastIndexOf(Node head, Object value) {
+    if (head == null) {
+      return -1;
+    }
+    ArrayList<Integer> indexes = new ArrayList<>();
+    Node tempHead = head;
+    int index = 0;
+    while (tempHead != null) {
+      if (tempHead.data.equals(value)) {
+        indexes.add(index);
+      }
+      index++;
+      tempHead = tempHead.next;
+    }
+    return indexes.size() > 0 ? indexes.get(indexes.size() - 1) : -1;
+  }
+
     public static void main(String[] args) {
 
         long start = System.currentTimeMillis();
