@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
 import java.util.stream.*;
 
 import javax.swing.plaf.ColorUIResource;
@@ -1233,17 +1234,82 @@ public class Kata {
     return indexes.size() > 0 ? indexes.get(indexes.size() - 1) : -1;
   }
 
+  public static boolean isNice(Integer[] arr) {
+    if (arr.length < 2) {
+        return false;
+    }
+    Collection<Integer> intList = Arrays.stream(arr).collect(Collectors.toCollection(ArrayList<Integer>::new));
+    return Arrays.stream(arr).allMatch(e -> Collections.frequency(intList, e - 1) >= 1 || Collections.frequency(intList, e + 1) >= 1);
+  }
+
+  public static boolean contain_all_rots(String str, String[] arr) {
+
+    List<String> strList = Arrays.asList(arr);
+    for (int i = 0; i < str.length(); i++) {
+        String left = str.substring(0, i);
+        String right = str.substring(i);
+        if (!strList.contains(left + right) {
+            return false;
+        }
+    }
+    return true;
+
+  }
+
+// class Node<T> {
+//     public T data;
+//     public Node<T> next;
+
+//     Node(T data, Node next) {
+//         this.data = data;
+//         this.next = next;
+//     }
+
+//     Node(T data) {
+//         this(data, null);
+//     }
+// }
+
+//   static <T> T reduce(Node<T> head, BiFunction<T, T, T> f, T init) {
+//     Node<T> tempHead = head;
+//     T total = init;
+//     while (tempHead != null) {
+//         total = f.apply(total, tempHead.data);
+//         tempHead = tempHead.next;
+//     }
+//     return total;
+//   }
+
+  public static String stringMerge(String s1, String s2, char letter) {
+
+    return s1.substring(0, s1.indexOf(letter)) + s2.substring(s2.lastIndexOf(letter) + 1);
+
+  }
+
+  public static int binToDecimal(String inp) {
+
+    long total = 0;
+    int index = inp.length() - 1;
+    int currentPower = 0;
+    while (index >= 0) {
+        if (inp.charAt(index) == '1') {
+          System.out.printf("Current power before = %d\n", currentPower);
+          total += (long)Math.pow(2, currentPower);
+          System.out.printf("Total = %d -- and currPower = %d\n", total, currentPower);
+        }
+        index -= 1;
+        currentPower += 1;
+    }
+    return (int)total;
+
+  }
+
+
     public static void main(String[] args) {
 
         long start = System.currentTimeMillis();
 
-        char board[][] = {{'Y', 'B', 'C', 'D', 'E'},
-                            {'F', 'Y', 'H', 'I', 'J'},
-                            {'K', 'L', 'Y', 'N', 'O'},
-                            {'P', 'Q', 'R', 'Y', 'T'},
-                            {'U', 'W', 'W', 'X', 'Y'}};
-
-        System.out.printf("The longest = %d\n", getTheLongest(board));
+        binToDecimal("1001001");
 
         long elapsed = System.currentTimeMillis() - start;
         System.out.printf("\nElapsed time = %d seconds\n", elapsed / 1000);
