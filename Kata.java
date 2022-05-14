@@ -1248,7 +1248,7 @@ public class Kata {
     for (int i = 0; i < str.length(); i++) {
         String left = str.substring(0, i);
         String right = str.substring(i);
-        if (!strList.contains(left + right) {
+        if (!strList.contains(left + right)) {
             return false;
         }
     }
@@ -1304,12 +1304,21 @@ public class Kata {
 
   }
 
+  public static int factorial(int n) {
+      if (n < 0 || n > 12) {
+          throw new IllegalArgumentException();
+      } else {
+          return n != 0 ? IntStream.range(1, n + 1).reduce((int a1, int a2) -> a1 * a2).getAsInt() : 1;
+      }
+  }
+
+
 
     public static void main(String[] args) {
 
         long start = System.currentTimeMillis();
 
-        binToDecimal("1001001");
+        System.out.println(factorial(4));
 
         long elapsed = System.currentTimeMillis() - start;
         System.out.printf("\nElapsed time = %d seconds\n", elapsed / 1000);
