@@ -1362,11 +1362,35 @@ public class Kata {
 		return Pattern.matches("\\d{1}", s);
 	}
 
+	public static int sum(List<Integer> list) {
+		return list.stream().reduce((e1, e2) -> e1.intValue() + e2.intValue()).get();
+	}
+
+	public static void helper(Set<Set<Integer>> combos, int data[], int start, int end, int index) {
+		if (index == data.length) {
+			int[] combo = data.clone();
+			Set<Integer> theSet = new HashSet<>();
+			Arrays.stream(combo).forEach(e -> theSet.add(e));
+			combos.add(theSet);
+		} else if (start <= end) {
+			data[index] = start;
+			helper(combos, data, start + 1, end, index + 1);
+			helper(combos, data, start + 1, end, index);
+		}
+	}
+
+	public static Set<Set<Integer>> generateCombinations(int n, int k) {
+		int[] theList = IntStream.range(0, n).toArray();
+		Set<Set<Integer>> combos = new HashSet<>();
+		helper(combos, theList, 0, n - 1, 0);
+		return combos;
+	}
+
 	public static int expressionsMatter(int a, int b, int c) {
-		int[] results = new int[]{
-			a + b + c,
-			a * b + c,
-			a + b * c
+		int[] results = new int[] {
+				a + b + c,
+				a * b + c,
+				a + b * c
 		};
 		Arrays.sort(results);
 		return results[2];
@@ -1376,7 +1400,8 @@ public class Kata {
 
 		long start = System.currentTimeMillis();
 
-		System.out.println(Arrays.toString(incrementer(new int[]{5, 8, 0, 5, 8})));
+		generateCombinations(3, 2).stream().forEach(e -> System.out
+				.println(String.format("[%s]", e.stream().map(f -> f + "").collect(Collectors.joining(" ")))));
 
 		long elapsed = System.currentTimeMillis() - start;
 		System.out.printf("\nElapsed time = %d seconds\n", elapsed / 1000);
