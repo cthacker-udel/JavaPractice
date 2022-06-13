@@ -1396,12 +1396,87 @@ public class Kata {
 		return results[2];
 	}
 
+	public static long weightSum(byte[] arr) {
+		long count = 0;
+		boolean sub = false;
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i] == 0 && sub) {
+				count++;
+				sub = false;
+			}
+			sub = arr[i] == 1;
+		}
+		count = sub ? count + 1 : count;
+		return count % 4294967296L;
+	}
+
+	public static long findMax(long n) {
+		int primes[] = new int[] { 1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31 };
+		long sum = 1;
+		long maxSum = 0;
+		HashSet<Long> hashSet = new HashSet<>();
+		String strN = String.valueOf(n);
+		while (true) {
+			for (int i = 0; i < strN.length(); i++) {
+				sum *= primes[Integer.parseInt(strN.charAt(i) + "")];
+			}
+			strN = String.valueOf(sum);
+			maxSum = Math.max(sum, maxSum);
+			if (hashSet.contains(sum)) {
+				break;
+			}
+			hashSet.add(sum);
+			sum = 1;
+		}
+		return maxSum;
+	}
+
+	public static int roundToNext5(int number) {
+		for (int i = number, j = number;; i++, j--) {
+			if (i % 5 == 0) {
+				return i;
+			} else if (j % 5 == 0) {
+				return j;
+			}
+
+		}
+	}
+
+	public static int toBinary(int n) {
+		return Integer.parseInt(Integer.toBinaryString(n));
+	}
+
+	public static String[] ASCIIbetize(String str) {
+		return Stream.of(str.split(" ")).distinct().sorted(new Comparator<String>() {
+			@Override
+			public int compare(String str1, String str2) {
+				int sum1 = str1.chars().sum();
+				int sum2 = str2.chars().sum();
+				return sum1 != sum2 ? sum1 - sum2 : str1.compareTo(str2);
+			}
+		}).toArray(String[]::new);
+	}
+
+	public static String solveUpp(final String str) {
+		int lCount = 0;
+		int uCount = 0;
+		for (int i = 0; i < str.length(); i++) {
+			String letter = str.charAt(i) + "";
+			if (letter.toUpperCase().equals(letter)) {
+				uCount++;
+			} else {
+				lCount++;
+			}
+		}
+		return lCount > uCount ? str.toLowerCase() : uCount > lCount ? str.toUpperCase() : str.toLowerCase();
+	}
+
 	public static void main(String[] args) {
 
 		long start = System.currentTimeMillis();
 
-		generateCombinations(3, 2).stream().forEach(e -> System.out
-				.println(String.format("[%s]", e.stream().map(f -> f + "").collect(Collectors.joining(" ")))));
+		System.out.println(
+				findMax(8L));
 
 		long elapsed = System.currentTimeMillis() - start;
 		System.out.printf("\nElapsed time = %d seconds\n", elapsed / 1000);
